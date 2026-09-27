@@ -1,134 +1,136 @@
 /**
- * Hikmah Oladele — Portfolio Interactions
- * Scope: Mobile navigation, subtle scroll reveal, and active navigation state.
- * Philosophy: Lightweight, robust, zero dependencies.
+ * Hikmah Oladele Portfolio
+ * Lightweight portfolio interactions.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  /* --------------------------------------------------------------------------
-     1. Mobile Navigation Drawer
-     -------------------------------------------------------------------------- */
-  const navToggle = document.getElementById('navToggle');
-  const primaryNav = document.getElementById('primaryNav');
-  const navLinks = document.querySelectorAll('.nav-link, .btn-nav');
+document.addEventListener("DOMContentLoaded", () => {
+  /* =========================================================
+     MOBILE NAVIGATION
+     ========================================================= */
 
-  function openMenu() {
-    if (!navToggle || !primaryNav) return;
-    navToggle.classList.add('is-active');
-    navToggle.setAttribute('aria-expanded', 'true');
-    primaryNav.classList.add('is-open');
-  }
+  const menuToggle = document.getElementById("menuToggle");
+  const navLinks = document.getElementById("navLinks");
 
-  function closeMenu() {
-    if (!navToggle || !primaryNav) return;
-    navToggle.classList.remove('is-active');
-    navToggle.setAttribute('aria-expanded', 'false');
-    primaryNav.classList.remove('is-open');
-  }
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("is-open");
 
-  if (navToggle && primaryNav) {
-    navToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
-      if (isExpanded) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
+      menuToggle.classList.toggle("is-active", isOpen);
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
     });
 
-    // Close menu when a link inside the nav is clicked
-    navLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        closeMenu();
+    // Close menu when a navigation link is clicked
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("is-open");
+        menuToggle.classList.remove("is-active");
+        menuToggle.setAttribute("aria-expanded", "false");
       });
     });
 
     // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
+    document.addEventListener("click", (event) => {
       if (
-        primaryNav.classList.contains('is-open') &&
-        !primaryNav.contains(e.target) &&
-        !navToggle.contains(e.target)
+        navLinks.classList.contains("is-open") &&
+        !navLinks.contains(event.target) &&
+        !menuToggle.contains(event.target)
       ) {
-        closeMenu();
+        navLinks.classList.remove("is-open");
+        menuToggle.classList.remove("is-active");
+        menuToggle.setAttribute("aria-expanded", "false");
       }
     });
 
-    // Close menu when pressing Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && primaryNav.classList.contains('is-open')) {
-        closeMenu();
-        navToggle.focus();
+    // Close menu with Escape
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        navLinks.classList.remove("is-open");
+        menuToggle.classList.remove("is-active");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.focus();
       }
     });
   }
 
-  /* --------------------------------------------------------------------------
-     2. Subtle Scroll Reveal
-     -------------------------------------------------------------------------- */
-  const revealElements = document.querySelectorAll('.reveal');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* =========================================================
+     SCROLL REVEAL
+     ========================================================= */
 
-  if (prefersReducedMotion || !('IntersectionObserver' in window)) {
-    // If reduced motion or IntersectionObserver unsupported, reveal immediately
-    revealElements.forEach((el) => el.classList.add('is-revealed'));
+  const revealElements = document.querySelectorAll(".reveal");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (
+    prefersReducedMotion ||
+    !("IntersectionObserver" in window)
+  ) {
+    revealElements.forEach((element) => {
+      element.classList.add("is-revealed");
+    });
   } else {
     const revealObserver = new IntersectionObserver(
       (entries, observer) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed');
+            entry.target.classList.add("is-revealed");
             observer.unobserve(entry.target);
           }
         });
       },
       {
-        threshold: 0.12,
-        rootMargin: '0px 0px -40px 0px',
+        threshold: 0.1,
+        rootMargin: "0px 0px -40px 0px",
       }
     );
 
-    revealElements.forEach((el) => revealObserver.observe(el));
+    revealElements.forEach((element) => {
+      revealObserver.observe(element);
+    });
   }
 
-  /* --------------------------------------------------------------------------
-     3. Active Navigation State on Scroll
-     -------------------------------------------------------------------------- */
-  const trackedSections = document.querySelectorAll('section[id]');
-  const navLinkMap = new Map();
+  /* =========================================================
+     ACTIVE NAVIGATION
+     ========================================================= */
 
-  document.querySelectorAll('.primary-nav .nav-link').forEach((link) => {
-    const href = link.getAttribute('href');
-    if (href && href.startsWith('#')) {
-      const targetId = href.substring(1);
-      navLinkMap.set(targetId, link);
-    }
-  });
+  const sections = document.querySelectorAll("section[id]");
+  const navigationLinks = document.querySelectorAll(
+    '.nav-links a[href^="#"]'
+  );
 
-  if ('IntersectionObserver' in window && trackedSections.length > 0) {
+  if (
+    sections.length > 0 &&
+    navigationLinks.length > 0 &&
+    "IntersectionObserver" in window
+  ) {
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const currentId = entry.target.getAttribute('id');
-            // Remove active class from all links
-            navLinkMap.forEach((link) => link.classList.remove('active'));
-            // Highlight current link
-            const activeLink = navLinkMap.get(currentId);
-            if (activeLink) {
-              activeLink.classList.add('active');
-            }
+          if (!entry.isIntersecting) {
+            return;
           }
+
+          const currentSection = entry.target.id;
+
+          navigationLinks.forEach((link) => {
+            const target = link.getAttribute("href");
+
+            link.classList.toggle(
+              "active",
+              target === `#${currentSection}`
+            );
+          });
         });
       },
       {
-        root: null,
-        rootMargin: '-20% 0px -65% 0px',
+        rootMargin: "-35% 0px -55% 0px",
         threshold: 0,
       }
     );
 
-    trackedSections.forEach((section) => sectionObserver.observe(section));
+    sections.forEach((section) => {
+      sectionObserver.observe(section);
+    });
   }
 });
