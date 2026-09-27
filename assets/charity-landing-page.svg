@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <rect width="100%" height="100%" fill="#f4f4f5"/>
+  <rect x="20" y="20" width="760" height="460" rx="8" fill="#ffffff" stroke="#e4e4e7" stroke-width="1.5"/>
+  <!-- Browser / UI header -->
+  <line x1="20" y1="64" x2="780" y2="64" stroke="#e4e4e7" stroke-width="1.5"/>
+  <circle cx="44" cy="42" r="5" fill="#d4d4d8"/>
+  <circle cx="60" cy="42" r="5" fill="#d4d4d8"/>
+  <circle cx="76" cy="42" r="5" fill="#d4d4d8"/>
+  <rect x="100" y="32" width="260" height="20" rx="4" fill="#f4f4f5"/>
+  <!-- Minimalist Wireframe Mockup -->
+  <rect x="60" y="100" width="320" height="24" rx="4" fill="#18181b"/>
+  <rect x="60" y="136" width="280" height="12" rx="3" fill="#a1a1aa"/>
+  <rect x="60" y="156" width="220" height="12" rx="3" fill="#d4d4d8"/>
+  <rect x="60" y="188" width="120" height="36" rx="4" fill="#27272a"/>
+  
+  <!-- Content cards -->
+  <rect x="420" y="100" width="320" height="180" rx="6" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="1"/>
+  <rect x="60" y="270" width="210" height="150" rx="6" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="1"/>
+  <rect x="290" y="270" width="210" height="150" rx="6" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="1"/>
+  <rect x="520" y="300" width="220" height="120" rx="6" fill="#f4f4f5" stroke="#e4e4e7" stroke-width="1"/>
+  
+  <!-- Overlay label -->
+  <rect x="220" y="210" width="360" height="70" rx="8" fill="#ffffff" stroke="#d4d4d8" stroke-width="1.5"/>
+  <text x="400" y="238" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#18181b" text-anchor="middle" letter-spacing="0.5">CHARITY LANDING PAGE</text>
+  <text x="400" y="260" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" fill="#71717a" text-anchor="middle">UI/UX Case Study · Screenshot Placeholder</text>
+</svg>
